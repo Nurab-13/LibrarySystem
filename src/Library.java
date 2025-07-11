@@ -47,9 +47,9 @@ public class Library {
             ps.setString(2, user1.getUserName());
             ps.setInt(3,user1.getContactId());
             if(ps.executeUpdate() > 0){
-                System.out.println("Book Inserted Successfully");
+                System.out.println("User Inserted Successfully");
             }else{
-                System.out.println("Book Insert Failed");
+                System.out.println("User Insert Failed");
             }
         }
         catch (SQLException | ClassNotFoundException e){
