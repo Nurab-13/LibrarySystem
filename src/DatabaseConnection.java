@@ -14,19 +14,5 @@ public class DatabaseConnection {
         conn = DriverManager.getConnection(path, username, password);
         return conn;
     }
-    public static void main(String[] args) {
-        try{
-            if(DatabaseConnection.connect() != null){
-                System.out.println("Connected to the database");
-            }
-            else{
-                System.out.println("Connection Failed");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
     }
-}

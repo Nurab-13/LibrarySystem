@@ -1,3 +1,6 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Library {
@@ -5,6 +8,30 @@ public class Library {
         Scanner input = new Scanner(System.in);
         //TODO creates some books and users
         Book book = new Book(12,"Atomic habits","Bhijan",5);
+        try{
+            Connection conn= DatabaseConnection.connect();
+            String query = "INSERT INTO book (BookNumber, BookName, BookAuthor, BookQuantity) VALUES (?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1,book.getBookNumber());
+            ps.setString(2,book.getBookName());
+            ps.setString(3,book.getAuthor());
+            ps.setInt(4,book.getBookQuantity());
+            if(ps.executeUpdate() > 0){
+                System.out.println("Book Inserted Successfully");
+            }else{
+                System.out.println("Book Insert Failed");
+            }
+        }
+        catch (SQLException | ClassNotFoundException e){
+            throw new RuntimeException(e);
+
+        }
+
+
+
+
+
+
         Book Book1 = new Book(21,"Marvel","Stan Lee",10);
         Book book2 = new Book(11,"SoloLeveling","Thaxaina",10);
         Book book3 = new Book(231,"Titanic","ThaVayena",10);
@@ -12,6 +39,23 @@ public class Library {
 
         //User
         User user1 = new User("Bhijan","Bhijan-01",981029303);
+        try{
+            Connection conn= DatabaseConnection.connect();
+            String query = "INSERT INTO user(Name, UserName, Contact) VALUES (?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1,user1.getName());
+            ps.setString(2, user1.getUserName());
+            ps.setInt(3,user1.getContactId());
+            if(ps.executeUpdate() > 0){
+                System.out.println("Book Inserted Successfully");
+            }else{
+                System.out.println("Book Insert Failed");
+            }
+        }
+        catch (SQLException | ClassNotFoundException e){
+            throw new RuntimeException(e);
+
+        }
         //TODO show available option
         //TODO show options: available books, borrow book, return book
         while (true) {
