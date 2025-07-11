@@ -1,6 +1,10 @@
+import com.mysql.cj.protocol.Resultset;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Library {
@@ -68,7 +72,34 @@ public class Library {
 
             int option = input.nextInt();
             if (option == 1) {
-                System.out.println( "working on showing available books");
+
+                try{
+                    Connection conn= DatabaseConnection.connect();
+                    ArrayList<Book> booklist = new ArrayList<>();
+                    String query = "SELECT BookNumber, BookName, BookAuthor, BookQuantity FROM book";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ResultSet bookSet = ps.executeQuery();//select gareesi execute vako
+                    while(bookSet.next()){
+//                        int bookNumber = bookSet.getInt("BookNumber");
+//                        String bookName = bookSet.getString("BookName");
+//                        String bookAuthor = bookSet.getString("BookAuthor");
+//                        int bookQuantity = bookSet.getInt("BookQuantity");
+                        Book Book0 = new Book(bookSet.getInt("BookNumber"),
+                                bookSet.getString("BookName"),
+                                bookSet.getString("BookAuthor"),
+                                bookSet.getInt("BookQuantity"));
+                        booklist.add(Book0);
+                    }
+                    for(Book Book0: booklist){
+                        System.out.println( "BookNumber"+"\n"+Book0.getBookNumber()+"\n"+"BookName"+"\n"+Book0.getBookName()+"\n"+"Book author"+"\n"+Book0.getAuthor()+"\n"+"BookQuantity"+"\n"+Book0.getBookQuantity());
+
+
+                    }
+                }
+                catch (SQLException | ClassNotFoundException e){
+                    throw new RuntimeException(e);
+
+                }
             }else if (option == 2) {
                 System.out.println("Before: "+book.getBookQuantity());
                 user1.BorrowBook(user1, book);
