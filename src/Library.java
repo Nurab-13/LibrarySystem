@@ -31,12 +31,6 @@ public class Library {
 
         }
 
-
-
-
-
-
-        Book Book1 = new Book(21,"Marvel","Stan Lee",10);
         Book book2 = new Book(11,"SoloLeveling","Thaxaina",10);
         Book book3 = new Book(231,"Titanic","ThaVayena",10);
         Book book4 = new Book(111,"Magadheera","Thaxaina",10);
@@ -67,8 +61,10 @@ public class Library {
             System.out.println("Enter 1: Show available books");
             System.out.println("Enter 2: Borrow books");
             System.out.println("Enter 3: Return books");
-            System.out.println("Enter 4: Exit");
-            System.out.println("Choose an option (1-4)");
+            System.out.println("Enter 4: Update books");
+            System.out.println("Enter 5: Delete books");
+            System.out.println("Enter 6: Exit");
+            System.out.println("Choose an option (1-6)");
 
             int option = input.nextInt();
             if (option == 1) {
@@ -107,9 +103,51 @@ public class Library {
             }else if (option == 3) {
                 System.out.println("working on returning books");
             } else if (option == 4) {
-                System.out.println("exiting");
-                break;
-            } else if (option > 4) {
+                System.out.println("Enter a book id");
+                int bookid = input.nextInt();
+                System.out.println("Enter a book number");
+                int booknumber = input.nextInt();
+                try{
+                    Connection conn= DatabaseConnection.connect();
+
+                    String query = "UPDATE book SET BookNumber = ? WHERE BookId = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1,booknumber);
+                    ps.setInt(2,bookid);
+                    if(ps.executeUpdate() > 0){
+                        System.out.println("Book Updated Successfully");
+                    }else{
+                        System.out.println("Book Updated Failed");
+                    }
+                }
+                catch (SQLException | ClassNotFoundException e){
+                    throw new RuntimeException(e);
+
+                }
+
+
+            } else if (option == 5) {
+                System.out.println("Enter a book id");
+                int bookid = input.nextInt();
+                try{
+                    Connection conn= DatabaseConnection.connect();
+                    String query = "DELETE FROM book WHERE BookId = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1,bookid);
+                    if(ps.executeUpdate() > 0){
+                        System.out.println("Book deleted Successfully");
+                    }else{
+                        System.out.println("Book delete Failed");
+                    }
+                }
+                catch (SQLException | ClassNotFoundException e){
+                    throw new RuntimeException(e);
+
+                }
+            }else if (option == 6) {
+                    System.out.println("exiting");
+                    break;
+            } else if (option > 6) {
                 System.out.println("Invalid option! Please try using the value from 1-4");
                 break;
             }
